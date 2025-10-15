@@ -90,6 +90,61 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT (& htim2 ) ;
+  void displayClockTime(int num) {
+  	  switch (num) {
+  	  case 0:
+  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_All,GPIO_PIN_RESET);
+  		  break;
+  	  case 1:
+  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_All,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_1_GPIO_Port,LED_1_Pin,GPIO_PIN_RESET);//turn on led 1 and off all
+  		  break;
+  	  case 2:
+  		  HAL_GPIO_WritePin(LED_1_GPIO_Port,LED_1_Pin,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_2_GPIO_Port,LED_2_Pin,GPIO_PIN_RESET); //turn on led 2
+  		  break;
+  	  case 3:
+  		  HAL_GPIO_WritePin(LED_2_GPIO_Port,LED_2_Pin,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_3_GPIO_Port,LED_3_Pin,GPIO_PIN_RESET); //turn on led 3
+  		  break;
+  	  case 4:
+  		  HAL_GPIO_WritePin(LED_3_GPIO_Port,LED_3_Pin,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_4_GPIO_Port,LED_4_Pin,GPIO_PIN_RESET); //turn on led 4
+  		  break;
+  	  case 5:
+  		  HAL_GPIO_WritePin(LED_4_GPIO_Port,LED_4_Pin,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_5_GPIO_Port,LED_5_Pin,GPIO_PIN_RESET); //turn on led 5
+  		  break;
+  	  case 6:
+  		  HAL_GPIO_WritePin(LED_5_GPIO_Port,LED_5_Pin,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_6_GPIO_Port,LED_6_Pin,GPIO_PIN_RESET); //turn on led 6
+  		  break;
+  	  case 7:
+  		  HAL_GPIO_WritePin(LED_6_GPIO_Port,LED_6_Pin,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_7_GPIO_Port,LED_7_Pin,GPIO_PIN_RESET); //turn on led 7
+  		  break;
+  	  case 8:
+  		  HAL_GPIO_WritePin(LED_7_GPIO_Port,LED_7_Pin,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_8_GPIO_Port,LED_8_Pin,GPIO_PIN_RESET); //turn on led 8
+  		  break;
+  	  case 9:
+  		  HAL_GPIO_WritePin(LED_8_GPIO_Port,LED_8_Pin,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_9_GPIO_Port,LED_9_Pin,GPIO_PIN_RESET); //turn on led 9
+  		  break;
+  	  case 10:
+  		  HAL_GPIO_WritePin(LED_9_GPIO_Port,LED_9_Pin,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_10_GPIO_Port,LED_10_Pin,GPIO_PIN_RESET); //turn on led 10
+  		  break;
+  	  case 11:
+  		  HAL_GPIO_WritePin(LED_10_GPIO_Port,LED_10_Pin,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_11_GPIO_Port,LED_11_Pin,GPIO_PIN_RESET); //turn on led 11
+  		  break;
+  	  case 12:
+  		  HAL_GPIO_WritePin(LED_11_GPIO_Port,LED_11_Pin,GPIO_PIN_SET);
+  		  HAL_GPIO_WritePin(LED_12_GPIO_Port,LED_12_Pin,GPIO_PIN_RESET); //turn on led 12
+  		  break;
+  	  }
+    }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -197,14 +252,17 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, RED_LED_Pin|EN0_Pin|EN1_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, DOT_Pin|RED_LED_Pin|EN0_Pin|EN1_Pin
+                          |EN2_Pin|EN3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LED_a_Pin|LED_b_Pin|LED_c_Pin|LED_d_Pin
                           |LED_e_Pin|LED_f_Pin|LED_g_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : RED_LED_Pin EN0_Pin EN1_Pin */
-  GPIO_InitStruct.Pin = RED_LED_Pin|EN0_Pin|EN1_Pin;
+  /*Configure GPIO pins : DOT_Pin RED_LED_Pin EN0_Pin EN1_Pin
+                           EN2_Pin EN3_Pin */
+  GPIO_InitStruct.Pin = DOT_Pin|RED_LED_Pin|EN0_Pin|EN1_Pin
+                          |EN2_Pin|EN3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
