@@ -56,7 +56,120 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+const int MAX_LED =4 ;
+int led_idx = 0;
+int led_buffer[4]={7, 8, 9, 0};
 
+void display7SEG (int num) {
+   	  // SET = turn off, RESET = turn on
+   	  switch (num) {
+   	  	case 0:
+   	  		 HAL_GPIO_WritePin(LED_g_GPIO_Port, LED_g_Pin, GPIO_PIN_SET); // turn off g and turn on the others
+   	  		 HAL_GPIO_WritePin(LED_a_GPIO_Port, LED_a_Pin, GPIO_PIN_RESET);
+   	  		 HAL_GPIO_WritePin(LED_b_GPIO_Port, LED_b_Pin, GPIO_PIN_RESET);
+   	  		 HAL_GPIO_WritePin(LED_c_GPIO_Port, LED_c_Pin, GPIO_PIN_RESET);
+   	  		 HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_RESET);
+   	  		 HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_RESET);
+   	  		 HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_RESET);
+   	  		 break;
+   	  	case 1:
+   	  			HAL_GPIO_WritePin(LED_a_GPIO_Port, LED_a_Pin, GPIO_PIN_SET);
+   	  			HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_SET);
+   	  			HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_SET);
+   	  			HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_SET);
+   	  			HAL_GPIO_WritePin(LED_g_GPIO_Port, LED_g_Pin, GPIO_PIN_SET);
+   	  			HAL_GPIO_WritePin(LED_b_GPIO_Port, LED_b_Pin, GPIO_PIN_RESET);
+   	  			HAL_GPIO_WritePin(LED_c_GPIO_Port, LED_c_Pin, GPIO_PIN_RESET);
+   	  			break;
+   	  	case 2:
+   	  			HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_SET);
+   	  			HAL_GPIO_WritePin(LED_c_GPIO_Port, LED_c_Pin, GPIO_PIN_SET);
+   	  			HAL_GPIO_WritePin(LED_a_GPIO_Port, LED_a_Pin, GPIO_PIN_RESET);
+   	  			HAL_GPIO_WritePin(LED_b_GPIO_Port, LED_b_Pin, GPIO_PIN_RESET);
+   	  			HAL_GPIO_WritePin(LED_g_GPIO_Port, LED_g_Pin, GPIO_PIN_RESET);
+   	  			HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_RESET);
+   	  			HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_RESET);
+   	  			break;
+   	  	case 3:
+   	  		//turn off e led and turn on c led
+   	  		HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_SET);
+   	  		HAL_GPIO_WritePin(LED_c_GPIO_Port, LED_c_Pin, GPIO_PIN_RESET);
+   	  		break;
+   	  	case 4:
+   	  		//turn off a_led and d_led, turn on f_led
+   	  		HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_RESET);
+   	  		HAL_GPIO_WritePin(LED_a_GPIO_Port, LED_a_Pin, GPIO_PIN_SET);
+   	  		HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_SET);
+   	  		break;
+   	  	case 5:
+   	  		//turn off b led and turn on a, d led
+   	  		HAL_GPIO_WritePin(LED_a_GPIO_Port, LED_a_Pin, GPIO_PIN_RESET);
+   	  		HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_RESET);
+   	  		HAL_GPIO_WritePin(LED_b_GPIO_Port, LED_b_Pin, GPIO_PIN_SET);
+   	  		break;
+   	  	case 6:
+   	  		// turn on e led
+   	  		HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_RESET);
+   	  		break;
+   	  	case 7:
+   	  		//turn off d,e,f,g led and turn on b led
+   	  		HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_SET);
+   	  		HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_SET);
+   	  		HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_SET);
+   	  		HAL_GPIO_WritePin(LED_g_GPIO_Port, LED_g_Pin, GPIO_PIN_SET);
+   	  		HAL_GPIO_WritePin(LED_b_GPIO_Port, LED_b_Pin, GPIO_PIN_RESET);
+   	  		break;
+   	  	case 8:
+   	  		//turn on d,e,f,g for turning full led
+   	  		HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_RESET);
+   	  		HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_RESET);
+   	  		HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_RESET);
+   	  		HAL_GPIO_WritePin(LED_g_GPIO_Port, LED_g_Pin, GPIO_PIN_RESET);
+   	  		break;
+   	  	case 9:
+   	  		//turn off e led
+   	  		HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_SET);
+   	  		break;
+   	  }
+}
+void update7SEG (int idx) {
+	  switch(idx) {
+	  case 0:
+		  display7SEG(led_buffer[0]);
+			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, RESET);
+			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
+			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
+			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+			break;
+
+		case 1:
+			display7SEG(led_buffer[1]);
+			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, RESET);
+			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
+			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+			break;
+
+		case 2:
+			display7SEG(led_buffer[2]);
+			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
+			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, RESET);
+			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+			break;
+
+		case 3:
+			display7SEG(led_buffer[3]);
+			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
+			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
+			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, RESET);
+			break;
+
+		default:
+			break;
+	  }
+  }
 /* USER CODE END 0 */
 
 /**
@@ -90,120 +203,7 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT (& htim2 ) ;
-  const int MAX_LED =4 ;
-  int led_idx = 0;
-  int led_buffer[4]={7, 8, 9, 0};
 
-  void display7SEG (int num) {
-     	  // SET = turn off, RESET = turn on
-     	  switch (num) {
-     	  	case 0:
-     	  		 HAL_GPIO_WritePin(LED_g_GPIO_Port, LED_g_Pin, GPIO_PIN_SET); // turn off g and turn on the others
-     	  		 HAL_GPIO_WritePin(LED_a_GPIO_Port, LED_a_Pin, GPIO_PIN_RESET);
-     	  		 HAL_GPIO_WritePin(LED_b_GPIO_Port, LED_b_Pin, GPIO_PIN_RESET);
-     	  		 HAL_GPIO_WritePin(LED_c_GPIO_Port, LED_c_Pin, GPIO_PIN_RESET);
-     	  		 HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_RESET);
-     	  		 HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_RESET);
-     	  		 HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_RESET);
-     	  		 break;
-     	  	case 1:
-     	  			HAL_GPIO_WritePin(LED_a_GPIO_Port, LED_a_Pin, GPIO_PIN_SET);
-     	  			HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_SET);
-     	  			HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_SET);
-     	  			HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_SET);
-     	  			HAL_GPIO_WritePin(LED_g_GPIO_Port, LED_g_Pin, GPIO_PIN_SET);
-     	  			HAL_GPIO_WritePin(LED_b_GPIO_Port, LED_b_Pin, GPIO_PIN_RESET);
-     	  			HAL_GPIO_WritePin(LED_c_GPIO_Port, LED_c_Pin, GPIO_PIN_RESET);
-     	  			break;
-     	  	case 2:
-     	  			HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_SET);
-     	  			HAL_GPIO_WritePin(LED_c_GPIO_Port, LED_c_Pin, GPIO_PIN_SET);
-     	  			HAL_GPIO_WritePin(LED_a_GPIO_Port, LED_a_Pin, GPIO_PIN_RESET);
-     	  			HAL_GPIO_WritePin(LED_b_GPIO_Port, LED_b_Pin, GPIO_PIN_RESET);
-     	  			HAL_GPIO_WritePin(LED_g_GPIO_Port, LED_g_Pin, GPIO_PIN_RESET);
-     	  			HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_RESET);
-     	  			HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_RESET);
-     	  			break;
-     	  	case 3:
-     	  		//turn off e led and turn on c led
-     	  		HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_SET);
-     	  		HAL_GPIO_WritePin(LED_c_GPIO_Port, LED_c_Pin, GPIO_PIN_RESET);
-     	  		break;
-     	  	case 4:
-     	  		//turn off a_led and d_led, turn on f_led
-     	  		HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_RESET);
-     	  		HAL_GPIO_WritePin(LED_a_GPIO_Port, LED_a_Pin, GPIO_PIN_SET);
-     	  		HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_SET);
-     	  		break;
-     	  	case 5:
-     	  		//turn off b led and turn on a, d led
-     	  		HAL_GPIO_WritePin(LED_a_GPIO_Port, LED_a_Pin, GPIO_PIN_RESET);
-     	  		HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_RESET);
-     	  		HAL_GPIO_WritePin(LED_b_GPIO_Port, LED_b_Pin, GPIO_PIN_SET);
-     	  		break;
-     	  	case 6:
-     	  		// turn on e led
-     	  		HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_RESET);
-     	  		break;
-     	  	case 7:
-     	  		//turn off d,e,f,g led and turn on b led
-     	  		HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_SET);
-     	  		HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_SET);
-     	  		HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_SET);
-     	  		HAL_GPIO_WritePin(LED_g_GPIO_Port, LED_g_Pin, GPIO_PIN_SET);
-     	  		HAL_GPIO_WritePin(LED_b_GPIO_Port, LED_b_Pin, GPIO_PIN_RESET);
-     	  		break;
-     	  	case 8:
-     	  		//turn on d,e,f,g for turning full led
-     	  		HAL_GPIO_WritePin(LED_d_GPIO_Port, LED_d_Pin, GPIO_PIN_RESET);
-     	  		HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_RESET);
-     	  		HAL_GPIO_WritePin(LED_f_GPIO_Port, LED_f_Pin, GPIO_PIN_RESET);
-     	  		HAL_GPIO_WritePin(LED_g_GPIO_Port, LED_g_Pin, GPIO_PIN_RESET);
-     	  		break;
-     	  	case 9:
-     	  		//turn off e led
-     	  		HAL_GPIO_WritePin(LED_e_GPIO_Port, LED_e_Pin, GPIO_PIN_SET);
-     	  		break;
-     	  }
-  }
-  void update7SEG (int idx) {
-  	  switch(idx) {
-  	  case 0:
-  		  display7SEG(led_buffer[0]);
-  			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, RESET);
-  			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
-  			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
-  			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
-  			break;
-
-  		case 1:
-  			display7SEG(led_buffer[1]);
-  			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
-  			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, RESET);
-  			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
-  			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
-  			break;
-
-  		case 2:
-  			display7SEG(led_buffer[2]);
-  			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
-  			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
-  			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, RESET);
-  			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
-  			break;
-
-  		case 3:
-  			display7SEG(led_buffer[3]);
-  			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
-  			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
-  			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
-  			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, RESET);
-  			break;
-
-  		default:
-  			break;
-  	  }
-    }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -225,7 +225,7 @@ int main(void)
 		  //TODO
 		  update7SEG(led_idx);
 		  led_idx++;
-		  if (led_idx > MAX_LED) led_idx=0;
+		  if (led_idx >= MAX_LED) led_idx=0;
 	  }
     /* USER CODE END WHILE */
 
