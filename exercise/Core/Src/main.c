@@ -90,6 +90,10 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT (& htim2 ) ;
+  const int MAX_LED =4 ;
+  int led_idx = 0;
+  int led_buffer[4]={7, 8, 9, 0};
+
   void display7SEG (int num) {
      	  // SET = turn off, RESET = turn on
      	  switch (num) {
@@ -162,13 +166,50 @@ int main(void)
      	  		break;
      	  }
   }
+  void update7SEG (int idx) {
+  	  switch(idx) {
+  	  case 0:
+  		  display7SEG(led_buffer[0]);
+  			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, RESET);
+  			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
+  			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
+  			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+  			break;
+
+  		case 1:
+  			display7SEG(led_buffer[1]);
+  			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+  			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, RESET);
+  			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
+  			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+  			break;
+
+  		case 2:
+  			display7SEG(led_buffer[2]);
+  			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+  			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
+  			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, RESET);
+  			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+  			break;
+
+  		case 3:
+  			display7SEG(led_buffer[3]);
+  			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+  			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
+  			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
+  			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, RESET);
+  			break;
+
+  		default:
+  			break;
+  	  }
+    }
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   setTimer1(50);
   setTimer2(100);
-  int led_idx = 1;
 
   while (1)
   {
@@ -179,50 +220,12 @@ int main(void)
 	  }
 
 	  if (timer1_flag == 1) {
-	  setTimer1(50);
-	  timer1_flag = 0;
-	  //TODO
-
-	  switch (led_idx) {
-	         case 1:
-	             // LED 1 hiển thị số 1
-	             display7SEG(1);
-	             HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, RESET);
-	             HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
-	             HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
-	             HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
-	             break;
-
-	         case 2:
-	             // LED 2 hiển thị số 2
-	             display7SEG(2);
-	             HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
-	             HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, RESET);
-	             HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
-	             HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
-	             break;
-
-	         case 3:
-	             // LED 3 hiển thị số 3
-	             display7SEG(3);
-	             HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
-	             HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
-	             HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, RESET);
-	             HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
-	             break;
-
-	         case 4:
-	             // LED 4 hiển thị số 0
-	             display7SEG(0);
-	             HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
-	             HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
-	             HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
-	             HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, RESET);
-	             break;
-	         }
-
-	  led_idx++;
-	  if (led_idx > 4) led_idx = 1;
+		  setTimer1(50);
+		  timer1_flag = 0;
+		  //TODO
+		  update7SEG(led_idx);
+		  led_idx++;
+		  if (led_idx > MAX_LED) led_idx=0;
 	  }
     /* USER CODE END WHILE */
 
