@@ -167,10 +167,17 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   setTimer1(50);
+  setTimer2(100);
   int led_idx = 1;
 
   while (1)
   {
+	  if (timer2_flag == 1) {
+	      setTimer2(100);
+	      timer2_flag = 0;
+	      HAL_GPIO_TogglePin(DOT_GPIO_Port,DOT_Pin);
+	  }
+
 	  if (timer1_flag == 1) {
 	  setTimer1(50);
 	  timer1_flag = 0;
