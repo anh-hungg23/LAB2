@@ -173,7 +173,7 @@ int main(void)
 		  setTimer1(50);
 		  timer1_flag = 0;
 		  //TODO
-
+		  HAL_GPIO_TogglePin(RED_LED_GPIO_Port,RED_LED_Pin);
 		  if (led_idx == 0) {
 			  display7SEG(1);
 			  HAL_GPIO_WritePin(EN0_GPIO_Port,EN0_Pin,RESET );
