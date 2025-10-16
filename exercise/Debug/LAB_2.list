@@ -752,8 +752,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(10);
- 8000626:	200a      	movs	r0, #10
+  setTimer1(100);
+ 8000626:	2064      	movs	r0, #100	; 0x64
  8000628:	f000 f9ce 	bl	80009c8 <setTimer1>
   while (1)
   {

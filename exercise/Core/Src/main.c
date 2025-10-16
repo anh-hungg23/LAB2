@@ -241,7 +241,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(10);
+  setTimer1(100);
   while (1)
   {
 	  if(timer1_flag == 1) {
