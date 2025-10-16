@@ -377,8 +377,8 @@ int main(void)
   setTimer1(50);
  8000362:	2032      	movs	r0, #50	; 0x32
  8000364:	f000 fa22 	bl	80007ac <setTimer1>
-  setTimer2(100);
- 8000368:	2064      	movs	r0, #100	; 0x64
+  setTimer2(50);
+ 8000368:	2032      	movs	r0, #50	; 0x32
  800036a:	f000 fa33 	bl	80007d4 <setTimer2>
   int led_idx = 1;
  800036e:	2301      	movs	r3, #1
